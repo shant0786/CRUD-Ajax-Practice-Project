@@ -3,48 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <title>Title</title>
-    <link rel="stylesheet" href="css/milligram.css" />
+
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/bootstrap-icons.css" />
   </head>
-  <body>
-    <div id="loader" class="loading d-none"></div>
-
-    <div class="container">
-      <div class="row">
-        <a href="create.html" class="button button-outline float-left"
-          >Create New</a
-        >
+  <body class="bg-body-secondary d-flex flex-column gap-3">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#"
+          ><img src="assets/logo.120b5320.svg" alt="logo"
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse show" id="navbarNavAltMarkup">
+          <div class="navbar-nav gap-4">
+            <a class="nav-link" href="">Products</a>
+            <a class="nav-link" href="create.html">Create a product </a>
+            <a class="nav-link" href="update.html">Update a product </a>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="container">
+    </nav>
+    <main class="container bg-white rounded-2 p-5">
       <div class="row">
-        <table>
-          <thead>
+        <div id="loader" class="loading d-none"></div>
+        <table class="table table-hover">
+          <h3 class="py-2 text-center text-black-50">Product List</h3>
+          <thead class="text-secondary bg-body-tertiary">
             <tr>
-              <th>Product Name</th>
-              <th>Product Code</th>
-              <th>Unit Price</th>
-              <th>Qty</th>
-              <th>Total Price</th>
-              <th>Delete</th>
-              <th>Update</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Code</th>
+              <th scope="col">Unit Price</th>
+              <th scope="col">Quality</th>
+              <th scope="col">Total Price</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody id="itemList"></tbody>
         </table>
       </div>
-    </div>
-    <script src="js/axios.min.js"></script>
+    </main>
 
+    <script src="js/axios.min.js"></script>
     <script>
       async function getList() {
         document.getElementById("loader").classList.remove("d-none");
 
         const URL = "http://164.68.107.70:6060/api/v1/ReadProduct";
         const res = await axios.get(URL);
-
+        console.log(res);
         document.getElementById("loader").classList.add("d-none");
 
         if (res.status === 200) {
@@ -52,19 +67,20 @@
 
           list.forEach((item) => {
             document.getElementById("itemList").innerHTML += `<tr>
-          <td>${item["ProductName"]}</td>
+          <td >${item["ProductName"]}</td>
           <td>${item["ProductCode"]}</td>
           <td>${item["UnitPrice"]}</td>
           <td>${item["Qty"]}</td>
           <td>${item["TotalPrice"]}</td>
-          <td><button onclick="deleteItem('${item["_id"]}')">Delete</button></td>
-          <td><button onclick="updateItem('${item["_id"]}')">Update</button></td>
+          <td><button onclick="deleteItem('${item["_id"]}')">Delete</button>
+          <button onclick="updateItem('${item["_id"]}')">Update</button></td>
                             </tr>`;
           });
         } else {
           alert("Wrong");
         }
       }
+      getList();
     </script>
   </body>
 </html>
